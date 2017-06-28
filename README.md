@@ -1,5 +1,9 @@
+快速创建react-app
+$ create-react-app name
+
 $ git remote add origin https://github.com/chenhua1920/reacttest-ch.git
 $ git push -u origin master
+
 推送改动
 你的改动现在已经在本地仓库的 HEAD 中了。执行如下命令以将这些改动提交到远端仓库：
 git push origin master
