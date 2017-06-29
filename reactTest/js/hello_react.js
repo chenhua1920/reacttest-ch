@@ -156,3 +156,89 @@ var Button = React.createClass({
          </div>,
         document.getElementById('example')
       );
+
+var UserGist = React.createClass({
+  getInitialState:function(){
+    return {
+      username:"",
+      lastGistUrl:''
+    }
+  },
+  componentDidMount:function(){
+    this.serverRequest = $.get(this.props.source,function(result){
+      var lastGist = result[0];
+      this.setState({
+        username:lastGist.owner.login,
+        lastGistUrl:lastGist.html_url
+      })
+    }.bind(this));
+  },
+  componentWillUnmount:function(){
+    this.serverRequest.abort();
+  },
+  render:function(){
+    return (
+      <div>
+        {this.state.username} 用户最新的Gist共享地址：
+        <a href={this.state.lastGistUrl}>{this.state.lastGistUrl}</a>
+      </div>
+    )
+  }
+});
+      ReactDOM.render(<UserGist source = "https://api.github.com/users/octocat/gists" />,
+        document.getElementById("ajaxbox"));
+
+//表单
+var Content = React.createClass({
+  render: function() {
+    return  <div>
+            <input type="text" value={this.props.myDataProp} onChange={this.props.updateStateProp} /> 
+            <h4>{this.props.myDataProp}</h4>
+            </div>;
+  }
+});
+var HelloMessage = React.createClass({
+  getInitialState: function() {
+    return {value: 'Hello Runoob!'};
+  },
+  handleChange: function(event) {
+    this.setState({value: event.target.value});
+  },
+  render: function() {
+    var value = this.state.value;
+    return <div>
+            <Content myDataProp = {value} 
+              updateStateProp = {this.handleChange}></Content>
+           </div>;
+  }
+});
+ReactDOM.render(
+  <HelloMessage />,
+  document.getElementById('inputexample')
+);
+
+//ref
+var MyComponent = React.createClass({
+      handleClick: function() {
+        // 使用原生的 DOM API 获取焦点
+        this.refs.myInput.focus();
+      },
+      render: function() {
+        //  当组件插入到 DOM 后，ref 属性添加一个组件的引用于到 this.refs
+        return (
+          <div>
+            <input type="text" ref="myInput" />
+            <input
+              type="button"
+              value="点我输入框获取焦点"
+              onClick={this.handleClick}
+            />
+          </div>
+        );
+      }
+    });
+
+    ReactDOM.render(
+      <MyComponent />,
+      document.getElementById('exampleref')
+    );
